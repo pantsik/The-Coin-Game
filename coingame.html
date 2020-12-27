@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link rel="shortcut icon" href="coin01.ico" />
+<title>The Coin Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="AUTHOR" content="Panos Tsikogiannopoulos" />
+<meta name="KEYWORDS" content="Coin Game" />
+<meta name="DESCRIPTION" content="The Coin Game is a board game played by two players." />
+
+<style>
+
+:root {
+  --background: #e2e8e9;
+  --foreground: #603F83;
+  --title: #b33286;
+  --buttons: #7e53ac;
+  --left: red;
+  --right: blue;
+}
+body {
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  font-family: Verdana;
+  font-size: calc(10px + 0.5vw);
+}
+h3 {
+  font-size: calc(15px + 0.5vw);
+}
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+a {
+  color: var(--title);
+  text-decoration: none;
+}
+.blink_left {
+  color: white;
+  background-color: var(--left);
+  width: 20%;
+  font-weight: bold;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  animation: blinker 1s linear infinite;
+}
+.blink_right {
+  color: white;
+  background-color: var(--right);
+  width: 20%;
+  font-weight: bold;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  animation: blinker 1s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+.main_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.left0 {
+  color: white;
+  background-color: var(--left);
+  width: 20%;
+  font-weight: bold;
+  text-align: center;
+}
+.center0 {
+  color: var(--title);
+  background: var(--background);
+  font-size: 2em;
+  font-weight: bold;
+  width: 60%;
+  text-align: center;
+}
+.right0 {
+  color: white;
+  background-color: var(--right);
+  width: 20%;
+  font-weight: bold;
+  text-align: center;
+}
+.left1 {
+  color: #ffed9a;
+  background-color: var(--left);
+  width: 20%;
+  text-align: center;
+  white-space: nowrap;
+}
+.center1 {
+  color: var(--foreground);
+  background: var(--background);
+  width: 60%;
+  text-align: center;
+  font-size: 0.7em;
+}
+.right1 {
+  color: #ffed1a;
+  background-color: var(--right);
+  width: 20%;
+  text-align: center;
+  white-space: nowrap;
+}
+.left2 {
+  color: #ffed9a;
+  background-color: var(--left);
+  width: 20%;
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+}
+.center2 {
+  color: var(--foreground);
+  background: var(--background);
+  width: 60%;
+  font-weight: bold;
+  text-align: center;
+}
+.right2 {
+  color: #ffed1a;
+  background-color: var(--right);
+  width: 20%;
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+}
+.left3 {
+  color: white;
+  background-color: var(--left);
+  width: 20%;
+  text-align: center;
+  white-space: nowrap;
+}
+.center3 {
+  color: var(--foreground);
+  background: var(--background);
+  width: 60%;
+  text-align: center;
+  font-size: 0.7em;
+}
+.right3 {
+  color: white;
+  background-color: var(--right);
+  width: 20%;
+  text-align: center;
+  white-space: nowrap;
+}
+.left4 {
+  color: white;
+  background-color: var(--left);
+  width: 20%;
+  font-size: 4em;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: top;
+}
+.center4 {
+  background: var(--background);
+  width: 60%;
+  text-align: center;
+}
+.right4 {
+  color: white;
+  background-color: var(--right);
+  width: 20%;
+  font-size: 4em;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: top;
+}
+.bottom {
+  background-color: var(--buttons);
+  color: var(--background);
+  font-size: 1em;
+  text-align: center;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.inner_table {
+  width: 100%;
+  margin: auto;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+.animation-up {
+  position: relative;
+  animation-name: anim_up;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+.animation-left {
+  position: relative;
+  animation-name: anim_left;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+.animation-right {
+  position: relative;
+  animation-name: anim_right;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+@keyframes anim_right {
+  from {left: 0vw;}
+  to {left: 80vw;}
+}
+@keyframes anim_left {
+  from {left: 0vw;}
+  to {left: -80vw;}
+}
+@keyframes anim_up {
+  from {bottom: 0vw;}
+  to {bottom: 90vw;}
+}
+
+.modal { /* The Modal (background) */
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 5vw; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.modal-content { /* Modal Content */
+  background-color: var(--foreground);
+  color: var(--background);
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+.close1 { /* The Close Button */
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close1:hover,
+.close1:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.close2 {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close2:hover,
+.close2:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu {
+  width: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  text-align: center;
+}
+.menu_title {
+color: var(--title);
+background-color: var(--background);
+font-size: calc(20px + 4vw);
+font-weight: bold;
+width: 100%;
+}
+.menu_buttons {
+  border-collapse: collapse;
+  margin: auto;
+}
+.menu_buttons td {
+  padding-left: 1vw;
+  padding-right: 1vw;
+}
+.buttons {
+  background-color: var(--buttons);
+  color: var(--background);
+  border: none;
+  width: 90px;
+  height: 50px;
+}
+.buttons:hover {
+  background-color: var(--foreground);
+}
+.radio-group {
+  border: solid 4px var(--foreground);
+  display: inline-block;
+  margin: 0px;
+  border-radius: 15px;
+  overflow: hidden;
+  text-align: center;
+}
+input[type=radio] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+label {
+  color: var(--foreground);
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: calc(7px + 1vw);
+  padding: 8px 1.7vw;
+}
+input[type=radio]:checked + label {
+  color: var(--background);
+  background: var(--foreground);
+}
+label + input[type=radio] + label {
+  border-left: solid 4px var(--foreground);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="div_menu" class="menu">
+<span class="menu_title">The Coin Game</span>
+
+<h3>Select number of coins:</h3>
+<p class="radio-group">
+    <input type="radio" checked="checked" name="coins" id="coin_02" value=2><label for="coin_02">&nbsp;2</label><input type="radio" name="coins" id="coin_03" value=3><label for="coin_03">&nbsp;3</label><input type="radio" name="coins" id="coin_04" value=4><label for="coin_04">&nbsp;4</label><input type="radio" name="coins" id="coin_05" value=5><label for="coin_05">&nbsp;5</label><input type="radio" name="coins" id="coin_06" value=6><label for="coin_06">&nbsp;6</label><input type="radio" name="coins" id="coin_07" value=7><label for="coin_07">&nbsp;7</label><input type="radio" name="coins" id="coin_08" value=8><label for="coin_08">&nbsp;8</label><input type="radio" name="coins" id="coin_09" value=9><label for="coin_09">&nbsp;9</label><input type="radio" name="coins" id="coin_10" value=10><label for="coin_10">10</label>
+</p>
+
+<p>&nbsp;</p>
+<h3>Select opponent:</h3>
+<p class="radio-group">
+<input type="radio" name="opponent" id="comp_novice" value=2 checked="checked"><label for="comp_novice">Computer<br>Novice</label><input type="radio" name="opponent" id="comp_advanced" value=1><label for="comp_advanced">Computer<br>Advanced</label><input type="radio" name="opponent" id="comp_expert" value=0><label for="comp_expert">Computer<br>Expert</label><input type="radio" name="opponent" id="human_opponent" value=9><label for="human_opponent">Human<br>Opponent</label>
+</p>
+
+<p>&nbsp;</p>
+<h3>Select number of games:</h3>
+<p class="radio-group">
+<input type="radio" name="games" id="game_02" value=2><label for="game_02">&nbsp;2</label><input type="radio" name="games" id="game_04" value=4 checked="checked"><label for="game_04">&nbsp;4</label><input type="radio" name="games" id="game_06" value=6><label for="game_06">&nbsp;6</label><input type="radio" name="games" id="game_08" value=8><label for="game_08">&nbsp;8</label><input type="radio" name="games" id="game_10" value=10><label for="game_10">10</label>
+</p>
+
+<p>&nbsp;</p>
+<table class="menu_buttons">
+  <tr>
+    <td><button id="rules_button" class="buttons" style="font-size:15px">Game Rules</button></td>
+    <td><button onclick="variables_from_menu()" class="buttons" style="font-size:20px"><b>Start Game</b></button></td>
+    <td><button id="about_button" class="buttons" style="font-size:15px">About Game</button></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</div>
+
+<div id="div_game">
+<table class="main_table">
+  <tr>
+    <td id="html_left_player" class="left0">
+      Computer Advanced
+    </td>
+    <td class="center0">
+      The Coin <a href="javascript:easteregg();">G</a>ame
+    </td>
+    <td id="html_right_player" class="right0">
+      Computer Advanced
+    </td>
+  </tr>
+  <tr>
+    <td class="left1">
+      Match score:
+    </td>
+    <td id="html_eval" class="center1">
+    </td>
+    <td class="right1">
+      Match score:
+    </td>
+  </tr>
+  <tr>
+    <td id="html_left_match" class="left2">
+      0
+    </td>
+    <td id="html_center_game" class="center2">
+    </td>
+    <td id="html_right_match" class="right2">
+      0
+    </td>
+  </tr>
+  <tr>
+    <td class="left3">
+      Game score:
+    </td>
+    <td id="html_random" class="center3">
+    </td>
+    <td class="right3">
+      Game score:
+    </td>
+  </tr>
+  <tr>
+    <td id="html_left_game" class="left4">
+      0
+    </td>
+    <td class="center4">
+      <table class="inner_table">
+        <tr id="html_empty_row">
+        </tr>
+        <tr id="html_coin_row">
+        </tr>
+      </table>
+    </td>
+    <td id="html_right_game" class="right4">
+	  0
+    </td>
+  </tr>
+  <tr>
+    <td id="html_bottom_text_1" colspan="3" class="bottom">
+    </td>
+  </tr>
+  <tr>
+    <td id="html_bottom_text_2" colspan="3" class="bottom">
+    </td>
+  </tr>
+</table>
+</div>
+
+<!-- The Modal -->
+<div id="rules_id" class="modal">
+  <div class="modal-content">
+    <span class="close1">&times;</span>
+    <p>Game Rules</p>
+    <p>The objective of the game is to collect coins of greater value than the opponent. <br>
+      In each round a player selects a coin and the other player decides which player will get it. <br>
+      The first coin is selected by each player alternately.
+      Each subsequent coin is selected by the player who holds the highest value of coins.
+      If both players share the same value of coins then the next coin is selected by the player who selected a coin in the previous round.
+    </p>
+  </div>
+</div>
+
+<div id="about_id" class="modal">
+  <div class="modal-content">
+    <span class="close2">&times;</span>
+    <p>Coin Game v.1.3</p>
+    <p>A board game by Panos Tsikogiannopoulos. <br>
+       The game was originally developed in Python then translated into Javascript. <br>
+       Content displayed and animations were made with DOM, HTML and CSS. <br>
+       The game contains an easter egg! Can you find it?
+    </p>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+document.getElementById("div_game").style.display = "none";
+
+//Δήλωση μεταβλητών
+const human = 0;
+var up_ids = [], coins = [], pressed = [];
+var left_arrow_str = '<img id="left_arrow" class="cursor-pointer" onclick="pressed_left_arrow()" src="left_arrow.png">';
+var right_arrow_str = '<img id="right_arrow" class="cursor-pointer" onclick="pressed_right_arrow()" src="right_arrow.png">';
+var empty_str = '<img src="empty.gif">';
+var i, coin_value, index, new_td, new_img, left_num, left_id, center_num, center_id, right_num, right_id, up_id_el, coins_el, pressed_el;
+var curr_pos = [], player_pass;
+var init_apof, curr_apof;
+var match_score_A, match_score_B;
+var score_A, score_B;
+var curr_epil, cur_pos, cur_apof, prev_apof, curr_taker;
+var game, text;
+var decision_player_name;
+var decision_from_computer;
+var show_random, show_eval;
+var two_player_game, comp_level, games, comp_name;
+var d  = [];
+var pop_coin = new sound("Pop-sound-effect.mp3");
+var take_coin = new sound("take-coin.wav");
+var game_win = new sound("Game-win.mp3");
+var game_lose = new sound("Game-lose.mp3");
+var match_win = new sound("Clapping-sound.mp3");
+var match_lose = new sound("failure.wav");
+// Get the modal
+var modal1 = document.getElementById("rules_id");
+var modal2 = document.getElementById("about_id");
+// Get the button that opens the modal
+var btn1 = document.getElementById("rules_button");
+var btn2 = document.getElementById("about_button");
+// Get the <span> element that closes the modal
+var span1 = document.getElementsByClassName("close1")[0];
+var span2 = document.getElementsByClassName("close2")[0];
+
+// When the user clicks the button, open the modal
+btn1.onclick = function() {
+  modal1.style.display = "block";
+}
+btn2.onclick = function() {
+  modal2.style.display = "block";
+}
+// When the user clicks on <span> (x), close the modal
+span1.onclick = function() {
+  modal1.style.display = "none";
+}
+span2.onclick = function() {
+  modal2.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal1) {
+    modal1.style.display = "none";
+  }
+  if (event.target == modal2) {
+    modal2.style.display = "none";
+  }
+}
+
+function menu() {
+  document.getElementById("div_game").style.display = "none";
+  document.getElementById("div_menu").style.display = "block";
+}
+
+function start_new_match() {
+  document.getElementById("div_menu").style.display = "none";
+  document.getElementById("div_game").style.display = "block";
+  game = 1;
+  match_score_A = 0; match_score_B = 0;
+  init_apof = 0;
+  decision_from_computer = false; show_random = false; show_eval = false;
+  text = '';
+  document.getElementById("html_eval").innerHTML = '';
+  display_match_scores();
+  start_new_game();
+}
+
+function start_new_game() {
+  up_ids.splice(0, up_ids.length);
+  coins.splice(0, coins.length);
+  pressed.splice(0, pressed.length);
+  document.getElementById("html_empty_row").innerHTML = '';
+  document.getElementById("html_coin_row").innerHTML = '';
+  fill_empty_row();
+  fill_coin_row();
+  fill_arrays();
+  restore_classes();
+	curr_pos.splice(0, curr_pos.length);
+	for (i = 0; i < COINS; i++) {
+		curr_pos.push(9); //Αρχικοποιεί την τρέχουσα θέση
+	}
+  document.getElementById("html_random").innerHTML = ' ';
+  score_A = 0;
+  score_B = 0;
+  i = 0;
+  init_apof = 1 - init_apof; //Αλλάζει τη θέση του παίκτη που παίρνει την πρώτη απόφαση
+  curr_apof = init_apof;
+  if (show_eval) {
+    display_eval(2);
+  }
+
+	//human = 0; //Ο άνθρωπος είναι πάντα ο αριστερός παίκτης σε παιχνίδι με τον computer
+  //[match_score_A, match_score_B] = [match_score_B, match_score_A]; //Αλλάζει τη θέση των match scores αφού αλλάζουν θέση οι παίκτες
+	display_match_scores();
+  display_game_scores();
+  define_player_names();
+  execute_selection(); // ΔΕΝ ΞΑΝΑΕΠΙΣΤΡΕΦΕΙ Ο ΕΛΕΓΧΟΣ ΕΔΩ
+}
+
+function getRndInteger(min, max) { //returns a random integer between min (included) and max (excluded)
+  return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+function curr_game_conclusion() {
+  document.getElementById("html_bottom_text_1").innerHTML = text;
+	if (score_A > score_B) {
+		match_score_A += 1;
+    text = player_A_name + ' wins the game.';
+    if (game <= games) {
+      game_win.play();
+    }
+	}
+	else if (score_A < score_B) {
+		match_score_B += 1;
+    text = player_B_name + ' wins the game.';
+    if (two_player_game && game <= games) { //Αν ο Player B είναι άνθρωπος και δεν έχει τελειώσει το ματς
+      game_win.play();
+    }
+    else if (game <= games) { //Αν ο Player B είναι Computer και δεν έχει τελειώσει το ματς
+      game_lose.play();
+    }
+	}
+	else {
+		match_score_A += 0.5;
+		match_score_B += 0.5;
+    text = 'Tie game. No winner.';
+	}
+  document.getElementById("html_bottom_text_2").innerHTML = text;
+}
+
+function match_conclusion() {
+  document.getElementById("html_bottom_text_1").innerHTML = text;
+	if (match_score_A > match_score_B) {
+    text = player_A_name + ' wins the match.';
+    match_win.play();
+	}
+	else if (match_score_A < match_score_B) {
+    text = player_B_name + ' wins the match.';
+    if (two_player_game) { //Αν ο Player B είναι άνθρωπος
+      match_win.play();
+    }
+    else { //Αν ο Player B είναι Computer
+      match_lose.play();
+    }
+	}
+	else {
+    text = 'Tie match. No winner.';
+	}
+  document.getElementById("html_bottom_text_2").innerHTML = text;
+	match_score_A = 0;
+	match_score_B = 0;
+}
+
+function execute_selection() {      //Εκτέλεση επιλογής
+	if (curr_apof == 1) { //Επιλέγει ο Player A
+		selection_player(player_A_name);
+    if (two_player_game) { //Αν το παιχνίδι είναι με δεύτερο παίκτη
+      document.getElementById("html_left_player").className = "blink_left";
+      document.getElementById("html_right_player").className = "right0";
+    }
+	}
+	else { //Επιλέγει ο Player B
+    if (! two_player_game) { //Αν το παιχνίδι είναι με τον Computer
+			selection_computer(player_B_name);
+    }
+		else { //Αν το παιχνίδι είναι με δεύτερο παίκτη
+			selection_player(player_B_name);
+      document.getElementById("html_left_player").className = "left0";
+      document.getElementById("html_right_player").className = "blink_right";
+		}
+  }
+}
+
+function execute_decision() {      //Εκτέλεση απόφασης
+	if (curr_apof == 1) { //Αποφασίζει ο Player B
+		if (! two_player_game) { //Αν το παιχνίδι είναι με τον Computer
+			decision_computer(player_B_name);
+		}
+		else { //Αν το παιχνίδι είναι με δεύτερο παίκτη
+			decision_player(player_B_name);
+      document.getElementById("html_left_player").className = "left0";
+      document.getElementById("html_right_player").className = "blink_right";
+		}
+	}
+	else { //Αποφασίζει ο Player A
+		decision_player(player_A_name);
+    if (two_player_game) { //Αν το παιχνίδι είναι με δεύτερο παίκτη
+      document.getElementById("html_left_player").className = "blink_left";
+      document.getElementById("html_right_player").className = "right0";
+    }
+  }
+}
+
+function computer_epil() { //Επιστρέφει τη θέση επιλογής του Computer
+	if (2 * comp_level >= i - COINS + 6 && comp_level != 0) { //Αν είναι κατάλληλος ο συνδυασμός του level με τη θέση τότε συνέχισε για τυχαία επιλογή
+		var avail_epils = [];
+		var pos_9 = 1;
+		for (var p = 0; p < COINS; p++) { //Βάζει στον πίνακα των τυχαίων επιλογών όλες τις θέσεις που έχουν 9
+			if (curr_pos[p] == 9) {
+        if ((comp_level == 2 && pos_9 + score_A <= COINS * (COINS + 1) / 4) //Αν παίζει ο Novice τότε δεν ρίσκάρει να επιλέξει για τον άνθρωπο σκορ που κερδίζει
+          || (comp_level == 1 && pos_9 + score_B != Math.floor((COINS * (COINS + 1)) / 4) && pos_9 + score_A < COINS * (COINS + 1) / 4) //ή αν παίζει ο Advanced τότε δεν ρίσκάρει να επιλέξει για τον εαυτό του σκορ που χάνει για 1 πόντο ή κάνει ισοπαλία
+        ) {
+				avail_epils.push(pos_9);
+        }
+			}
+			pos_9 += 1;
+		}
+    var rand_epil = getRndInteger(1, avail_epils.length + 1);
+    if (show_random) {
+      document.getElementById("html_random").innerHTML = 'random choice: ' + avail_epils[rand_epil - 1];
+    }
+		return avail_epils[rand_epil - 1];
+	}
+	else { //Επιλογή βάσει υπολογισμού
+		var t = [];
+		var best = []; //Σε αυτή τη λίστα μπαίνουν οι καλύτερες επιλογές του Computer ώστε στο τέλος να διαλέξει τυχαία μία από αυτές
+		for (var p = 0; p < COINS; p++) { //Βάζει το 8 σε κάθε θέση του συνδυασμού της επόμενης θέσης που έχει μέσα 9
+			var t2 = curr_pos.slice(0);  //Αντιγράφει τον Array σε έναν νέο.
+			if (t2[p] == 9) {
+				t2[p] = 8; //Βάζει το 8 σε κάθε θέση του συνδυασμού της επόμενης θέσης με την επανάληψη του loop
+				t.push(t2.slice(0));
+			}
+		}
+		var found = false;
+		for (var t2 of t) {
+			if (d[i][t2][1] == 1 - human) { //Αν βρέθηκε συνδυασμός που κερδίζει για τον Computer
+				found = true;
+				var pos_8 = 1;
+				for (var j of t2) { //Ψάχνει τη θέση του 8 στον συνδυασμό που κερδίζει για τον Computer
+					if (j == 8) {
+						break;
+					}
+					pos_8 += 1;
+				}
+				best.push(pos_8);
+			}
+		}
+		if (! found) { //Αν δεν βρέθηκε συνδυασμός που κερδίζει για τον Computer
+			for (var t2 of t) {
+				if (d[i][t2][1] == 0.5) { //Αν βρέθηκε συνδυασμός που κάνει ισοπαλία
+					found = true;
+					var pos_8 = 1;
+					for (var j of t2) { //Ψάχνει τη θέση του 8 στον συνδυασμό που κάνει ισοπαλία
+						if (j == 8) {
+							break;
+						}
+						pos_8 += 1;
+					}
+					best.push(pos_8);
+				}
+			}
+			if (! found) { //Αν δεν βρέθηκε ούτε συνδυασμός που κάνει ισοπαλία
+        //Ο Computer χάνει, αλλά κοιτάζει σε όλους τους συνδυασμους της επόμενης θέσης να δει σε ποια θέση επιλογής έχει τη μεγαλύτερη πιθανότητα για νίκη ή ισοπαλία
+				var max_pos_score = 0;
+				var pos_8 = 0;
+				for (var j of t[0]) { //Βρίσκει την πρώτη διαθέσιμη τιμή για το αρχικό pos_8, σε περίπτωση που δεν προκύψει συνδυασμός που κερδίζει για τον computer πιο κάτω
+					if (j == 8) {
+						break;
+					}
+					pos_8 += 1;
+				}
+				best.push(pos_8 + 1);
+				for (var t2 of t) {
+					var t3 = [];
+					var pos_score = 0;
+					var bonus = 0; //Η επιπλέον αύξηση στο σκορ ενός συνδυασμού όταν σε αυτόν επιλέγει ο Computer. Δείχνει πόσο καλύτερο είναι να επιλέγει ο Computer σε σχέση με το να αποφασίζει.
+					for (var k = 0; k < 2; k++) {
+						var test_pos = t2.slice(0); //Αντιγράφει τον Array σε έναν νέο.
+						pos_8 = 0;
+						for (var j of t2) { //Ψάχνει τη θέση του 8 στον συνδυασμό που εξετάζεται
+							if (j == 8) {
+								break;
+							}
+							pos_8 += 1;
+						}
+						if (i == COINS - 1) { //Αν βρισκόμαστε στο τελευταίο νόμισμα τότε ο computer επιλέγει αναγκαστικά αυτό
+							return pos_8 + 1;
+						}
+						test_pos[pos_8] = k; //Δοκιμάζει στη θέση επιλογής το 0 και το 1
+						for (var j = 0; j < COINS; j++) { //Βάζει το 8 σε κάθε θέση του συνδυασμού της επόμενης θέσης που έχει μέσα 9
+							var t4 = test_pos.slice(0); //Αντιγράφει τον Array σε έναν νέο.
+							if (t4[j] == 9) {
+								t4[j] = 8; //Βάζει το 8 σε κάθε θέση του συνδυασμού της επόμενης θέσης με την επανάληψη του loop
+								t3.push(t4.slice(0));
+								if (d[i+1][t4][1] == 1 - human) { //Αν το αποτέλεσμα του συνδυασμου δίνει νίκη στον Computer
+                  if (decision(t4) == human) { //Αυτός ο έλεγχος είναι το XAND (ή XNOR) μεταξύ του decision και του human
+										if (i < COINS - 2) { //Στις 2 τελευταίες θέσεις είναι πιο μπερδευτικό για τον παίκτη αν δεν επιλέξει ο computer με βάση τον αλγόριθμο
+											bonus = COINS; //Αλγόριθμος
+										}
+										else {
+											bonus = 0.5; //Προσπάθεια να μπερδέψει τον παίκτη
+										}
+									}
+									else {
+										pos_score += 1;
+									}
+								}
+							}
+						}
+					}
+					pos_score += bonus;
+					if (pos_score > max_pos_score) {
+						max_pos_score = pos_score;
+						best = []; //Αν βρέθηκε μεγαλύτερο σκορ από το προηγούμενο, καθαρίζει το προηγούμενο σκορ από τις καλύτερες επιλογές
+						best.push(pos_8 + 1);
+					}
+					else if (pos_score == max_pos_score) {
+						best.push(pos_8 + 1); //Αν βρέθηκε το ίδιο με το μεγαλύτερο σκορ, το προσθέτει κι αυτό στη λίστα
+					}
+				}
+			}
+		}
+    return best[getRndInteger(0, best.length)]; //Επιστρέφει μία τυχαία θέση από τις καλύτερες
+	}
+}
+
+function tiebreak() { //Εύρεση του παίκτη που παίρνει το νόμισμα όταν στη θέση του taker υπάρχει το 0.5
+  var t = [];
+  var func_pos = curr_pos.slice(0);
+	for (var j = 0; j < 2; j++) {
+		func_pos[curr_epil - 1] = j;
+		found = false;
+		for (var k = 0; k < COINS; k++) {
+			if (func_pos[k] == 9) {
+				found = true;
+				func_pos[k] = 8;
+				t.push(func_pos.slice(0));
+				func_pos[k] = 9;
+			}
+		}
+		if (! found) { //Βρισκόμαστε στην προτελευταία θέση όπου δεν υπάρχουν 9ρια στον επόμενο συνδυασμό
+			t.push(func_pos.slice(0));
+		}
+	}
+	curr_pos[curr_epil - 1] = 8;
+	var comp_takes = 99;
+	for (var t2 of t) {
+		if (d[i+1][t2][1] == 1 - human) { //Αν βρέθηκε συνδυασμός που κερδίζει για τον Computer τότε επιστρέφει τον παίκτη που παίρνει για να κερδίσει ο Computer
+			comp_takes = t2[curr_epil - 1];
+      break;
+		}
+    else if (d[i+1][t2][1] == 0.5) { //Αν βρέθηκε συνδυασμός που κάνει ισοπαλία
+      comp_takes = t2[curr_epil - 1]; //Κρατάει τον παίκτη που παίρνει για να κάνει ισοπαλία αλλά συνεχίζει το ψάξιμο
+    }
+	}
+  if (comp_takes == 99) { //Αν δεν βρέθηκε ούτε συνδυασμός που κερδίζει ούτε συνδυασμός που κάνει ισοπαλία
+    comp_takes = human; //Μάλλον δεν γίνεται, αλλά βάζει σαν παίκτη που παίρνει τον άνθρωπο
+  }
+  return comp_takes;
+}
+
+function decision(combin) { //Υπολογίζει το σκορ του συγκεκριμένου συνδυασμού
+	var total_score = 0;
+	var score_B = 0;
+	for (var j = 0; j < COINS; j++) {
+		if (combin[j] < 8) { //Για να μην υπολογίζει τις κενές θέσεις και τη θέση επιλογής
+			total_score += j + 1;
+			score_B += (j + 1) * combin[j];
+		}
+	}
+	if (score_B > total_score / 2) {
+		var apof = 0; //Ο παίκτης Β κάνει την επιλογή και ο παίκτης Α αποφασίζει
+	}
+	else if (score_B < total_score / 2) {
+		var apof = 1; //Ο παίκτης Α κάνει την επιλογή και ο παίκτης Β αποφασίζει
+	}
+	else {
+		var apof = 0.5; //Η απόφαση είναι του παίκτη που πήρε την προηγούμενη απόφαση ή του παίκτη Α αν είναι η 1η απόφαση
+	}
+	return apof;
+}
+
+function decision_player(player_name) {
+  document.getElementById("html_bottom_text_1").innerHTML = text;
+  text = player_name + ', which player takes the selected coin?';
+  document.getElementById("html_bottom_text_2").innerHTML = text;
+  decision_player_name = player_name;
+}
+
+function decision_computer(player_name) {
+  //Ο computer παίρνει τυχαία απόφαση αν:
+  if (2 * comp_level >= (i - COINS) + 7 //α) είναι κατάλληλος ο συνδυασμός του level με τη θέση και
+      && (
+        (comp_level == 2 && score_B + curr_epil <= COINS * (COINS + 1) / 4 && score_A + curr_epil <= COINS * (COINS + 1) / 4) //και β) ο Novice και ο άνθρωπος δεν μπορούν να φτάσουν τουλάχιστον σκορ που κερδίζει σίγουρα
+      || (comp_level == 1 && score_B + curr_epil < Math.floor(COINS * (COINS + 1) / 4) && score_A + curr_epil < Math.floor(COINS * (COINS + 1) / 4)) //ή γ) ο Advanced και ο άνθρωπος δεν μπορούν να φτάσουν τουλάχιστον σκορ που χάνει για 1 πόντο ή κάνει ισοπαλία
+          )
+    ) {
+    var rndnum = getRndInteger(0, 10); //Τυχαίος αριθμός από το 0 έως το 9
+    if ((comp_level == 2 && rndnum < 5) || (comp_level == 1 && rndnum < 7)) { //Αν παίζει ο Novice τότε η απόφαση ποιος παίρνει το ν΄όμισμα είναι τυχαία κατά 50% ενώ αν παίζει ο Advanced τότε ευνοείται η περίπτωση να πάει το νόμισμα στον άνθρωπο
+      curr_taker = 0;
+    }
+    else {
+      curr_taker = 1;
+    }
+    if (show_random) {
+      document.getElementById("html_random").innerHTML = 'random decision: ' + curr_taker;
+    }
+	}
+	else { //Κανονική απόφαση βάσει υπολογισμού
+		curr_taker = d[i][curr_pos][0];
+		if (curr_taker == 0.5) { //Αν η έκβαση εξαρτάται από τον παίκτη που παίρνει το νόμισμα
+			curr_taker = tiebreak(); //Εύρεση του παίκτη που παίρνει το νόμισμα
+		}
+	}
+  decision_player_name = player_name;
+  if (curr_taker == 0) { //Αν ο Computer αποφάσισε ότι το νόμισμα το παίρνει ο αριστερός παίκτης
+    setTimeout(pressed_left_arrow, 2000);
+  }
+  else { //Αν ο Computer αποφάσισε ότι το νόμισμα το παίρνει ο δεξιός παίκτης
+    setTimeout(pressed_right_arrow, 2000);
+  }
+}
+
+function selection_player(player_name) {
+  if (! two_player_game) {
+    decision_from_computer = true; //Αν επιλέγει άνθρωπος και δεν παίζουν δύο άνθρωποι τότε αποφασίζει ο Computer
+  }
+  document.getElementById("html_bottom_text_1").innerHTML = text;
+  text = player_name + ', select a coin';
+  document.getElementById("html_bottom_text_2").innerHTML = text;
+  player_pass = player_name;
+}
+
+function selection_computer(player_name) {
+  disable_classes();
+	const epil = computer_epil();
+  player_pass = player_name;
+  var center_num = ("0" + epil).slice(-2);
+  var pressed_el = "pressed_" + center_num;
+  setTimeout(window[pressed_el], 2000);
+}
+
+function display_game_scores() {
+  document.getElementById("html_left_game").innerHTML = score_A;
+  document.getElementById("html_right_game").innerHTML = score_B;
+}
+
+function display_match_scores() {
+  document.getElementById("html_left_match").innerHTML = match_score_A;
+  document.getElementById("html_right_match").innerHTML = match_score_B;
+	if (game <= games) {
+    document.getElementById("html_center_game").innerHTML = 'Game ' + game + ' of ' + games;
+	}
+}
+
+function define_player_names() {
+	if (! two_player_game) {
+		player_A_name = 'Human';
+		player_B_name = comp_name;
+  }
+  else {
+  	player_A_name = 'Player A';
+  	player_B_name = 'Player B';
+	}
+  document.getElementById("html_left_player").innerHTML = player_A_name;
+  document.getElementById("html_right_player").innerHTML = player_B_name;
+}
+
+function display_eval(func_apof) {
+	var t = [];
+	for (var p = 0; p < COINS; p++) { //Βάζει το 8 σε κάθε θέση του συνδυασμού της επόμενης θέσης που έχει μέσα 9
+		var t2 = curr_pos.slice(0); //Αντιγράφει τον Array σε έναν νέο.
+		if (t2[p] == 9) {
+			t2[p] = 8; //Βάζει το 8 σε κάθε θέση του συνδυασμού της επόμενης θέσης με την επανάληψη του loop
+			t.push(t2.slice(0));
+		}
+	}
+	var min_apot = 1;
+	var max_apot = 0;
+	for (var t3 of t) {
+		if (d[i][t3][1] > max_apot) {
+			max_apot = d[i][t3][1];
+			var takes = d[i][t3][0];
+		}
+		if (d[i][t3][1] < min_apot) {
+			min_apot = d[i][t3][1];
+			var takes = d[i][t3][0];
+		}
+	}
+	if (func_apof == 0) {
+		var wins = max_apot;
+	}
+	else {
+		var wins = min_apot;
+	}
+	if (wins == 0.5) {
+		if (takes == 0.5) { //Κερδίζει αυτός που αποφάσιζε πριν
+			var wins = func_apof;
+		}
+	}
+  if (func_apof == 2 && wins != 0.5) {
+    //alert("special case");
+    wins = init_apof;
+  }
+	if (wins == 0) {
+		var winning_player = player_A_name + ' wins';
+    var winning_color = 'var(--left)';
+	}
+	else if (wins == 1) {
+		var winning_player = player_B_name + ' wins';
+    var winning_color = 'var(--right)';
+	}
+	else { //wins  == 0.5 and takes != 0.5
+		var winning_player = 'the game is a tie';
+    var winning_color = 'var(--foreground)';
+	}
+  document.getElementById("html_eval").innerHTML = 'With perfect play from both sides, <span style="color:' + winning_color + '">' + winning_player + '</span>.';
+}
+
+function variables_from_menu() { //Εκτελείται όταν γίνει click στο κουμπί Start Game
+  //Αρχικοποιεί τη βασική δομή που είναι μια λίστα από καταλόγους (objects στην javascript)
+  d.splice(0, d.length);
+  for (var i = 0; i < 10 + 1; i++) {
+    d[i] = {};
+  }
+
+  COINS = parseInt(document.querySelector('input[name="coins"]:checked').value);
+  var str_coins = ("0" + COINS).slice(-2);
+  var f = 'combin' + str_coins + '.dat';
+
+  comp_level = parseInt(document.querySelector('input[name="opponent"]:checked').value);
+  if (comp_level == 9) {
+    two_player_game = true;
+  }
+  else {
+    two_player_game = false;
+  }
+
+  games = parseInt(document.querySelector('input[name="games"]:checked').value);
+
+  if (comp_level == 2) {
+    comp_name = 'Computer Novice'; //Υπολογίζει από τη θέση COINS-2 και πάνω
+  }
+  else if (comp_level == 1) {
+    comp_name = 'Computer Advanced'; //Υπολογίζει από τη θέση COINS-4 και πάνω
+  }
+  else { //comp_level == 0
+    comp_name = 'Computer Expert'; //Υπολογίζει τα πάντα
+  }
+  LoadFile(f, ParseFile);
+}
+
+function LoadFile(FileName, myCallback) { //Διαβάζει όλο το αρχείο
+    let req = new XMLHttpRequest();
+    req.open('GET', FileName);
+    req.onload = function() {
+      if (req.status == 200) {
+        myCallback(this.responseText);
+      }
+    }
+    req.send();
+}
+
+function ParseFile(wholeFile) { //Εκτελείται αφού έχει φορτωθεί το αρχείο
+  //Εδώ γεμίζει η βασική δομή d από τα δεδομένα του αρχείου
+  var lines = wholeFile.split('\n');
+  for (var i = 0; i < COINS + 1; i++) {
+      var n = 0;
+      var file_line = lines[i];
+      while (file_line[n] != 'z') {
+        var comb = [];
+        var apot = [];
+        for (var j = 0; j < COINS; j++) {
+          comb.push(parseInt(file_line[n]));
+          n += 1;
+        }
+        var apot0 = parseInt(file_line[n]);
+        n += 1;
+        var apot1 = parseInt(file_line[n]);
+        n += 1;
+        if (apot0 == 7) {
+          apot0 = 0.5;
+        }
+        if (apot1 == 7) {
+          apot1 = 0.5;
+        }
+        apot.push(apot0);
+        apot.push(apot1);
+        d[i][comb] = apot;
+      }
+    }
+  start_new_match();
+}
+
+function fill_arrays() {
+  for (var i = 0; i < COINS + 2; i++) {
+    center_num = ("0" + i).slice(-2);
+    up_id_el = "empty".concat(center_num);
+    coins_el = "coin".concat(center_num);
+    pressed_el = "pressed_" + center_num + "()";
+    if (i > 0 && i < COINS + 1) {
+      coins.push(coins_el);
+      pressed.push(pressed_el);
+    }
+    up_ids.push(up_id_el);
+  }
+}
+
+function fill_empty_row() {
+  new_td = document.createElement("td");
+  new_td.setAttribute("id", "empty00");
+  new_img = document.createElement("img");
+  new_img.src = "empty.gif";
+  new_td.appendChild(new_img);
+  document.getElementById("html_empty_row").appendChild(new_td);
+  for (var i = 1; i < COINS + 1; i++) {
+    center_num = ("0" + i).slice(-2);
+    center_id = "empty".concat(center_num);
+    new_td = document.createElement("td");
+    new_td.setAttribute("id", center_id);
+    document.getElementById("html_empty_row").appendChild(new_td);
+  }
+  right_num = ("0" + (COINS + 1)).slice(-2);
+  right_id = "empty".concat(right_num);
+  new_td = document.createElement("td");
+  new_td.setAttribute("id", right_id);
+  new_img = document.createElement("img");
+  new_img.src = "empty.gif";
+  new_td.appendChild(new_img);
+  document.getElementById("html_empty_row").appendChild(new_td);
+}
+
+function fill_coin_row() {
+  new_td = document.createElement("td");
+  new_td.setAttribute("id", "start00");
+  new_img = document.createElement("img");
+  new_img.src = "empty.gif";
+  new_td.appendChild(new_img);
+  document.getElementById("html_coin_row").appendChild(new_td);
+  for (var i = 1; i < COINS + 1; i++) {
+    center_num = ("0" + i).slice(-2);
+    center_id = "start".concat(center_num);
+    img_id = "coin".concat(center_num);
+    onclick_style = "pressed_" + center_num + "()";
+    new_td = document.createElement("td");
+    new_td.setAttribute("id", center_id);
+    new_img = document.createElement("img");
+    new_img.setAttribute("src", "" + img_id + ".gif");
+    new_img.setAttribute("id", img_id);
+    new_img.setAttribute("class", "cursor-pointer");
+    new_img.setAttribute("onclick", onclick_style);
+    new_td.appendChild(new_img);
+    document.getElementById("html_coin_row").appendChild(new_td);
+  }
+  right_num = ("0" + (COINS + 1)).slice(-2);
+  right_id = "start".concat(right_num);
+  new_td = document.createElement("td");
+  new_td.setAttribute("id", right_id);
+  new_img = document.createElement("img");
+  new_img.src = "empty.gif";
+  new_td.appendChild(new_img);
+  document.getElementById("html_coin_row").appendChild(new_td);
+}
+
+function easteregg() {
+  if (! show_eval) {
+    show_eval = true;
+  }
+  else {
+    show_eval = false;
+    document.getElementById("html_eval").innerHTML = '';
+  }
+  if (! show_random) {
+    show_random = true;
+  }
+  else {
+    show_random = false;
+  }
+}
+
+function pressed_01() {
+  coin_value = 1;
+  disable_classes();
+  document.getElementById("coin01").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty01").innerHTML = '<img id="coin_up" src="coin01.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start01").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty00").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty02").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin01");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_01()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_02() {
+  coin_value = 2;
+  disable_classes();
+  document.getElementById("coin02").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty02").innerHTML = '<img id="coin_up" src="coin02.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start02").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty01").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty03").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin02");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_02()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_03() {
+  coin_value = 3;
+  disable_classes();
+  document.getElementById("coin03").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty03").innerHTML = '<img id="coin_up" src="coin03.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start03").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty02").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty04").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin03");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_03()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_04() {
+  coin_value = 4;
+  disable_classes();
+  document.getElementById("coin04").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty04").innerHTML = '<img id="coin_up" src="coin04.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start04").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty03").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty05").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin04");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_04()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_05() {
+  coin_value = 5;
+  disable_classes();
+  document.getElementById("coin05").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty05").innerHTML = '<img id="coin_up" src="coin05.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start05").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty04").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty06").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin05");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_05()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_06() {
+  coin_value = 6;
+  disable_classes();
+  document.getElementById("coin06").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty06").innerHTML = '<img id="coin_up" src="coin06.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start06").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty05").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty07").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin06");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_06()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_07() {
+  coin_value = 7;
+  disable_classes();
+  document.getElementById("coin07").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty07").innerHTML = '<img id="coin_up" src="coin07.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start07").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty06").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty08").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin07");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_07()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_08() {
+  coin_value = 8;
+  disable_classes();
+  document.getElementById("coin08").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty08").innerHTML = '<img id="coin_up" src="coin08.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start08").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty07").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty09").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin08");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_08()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_09() {
+  coin_value = 9;
+  disable_classes();
+  document.getElementById("coin09").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty09").innerHTML = '<img id="coin_up" src="coin09.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start09").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty08").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty10").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin09");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_09()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_10() {
+  coin_value = 10;
+  disable_classes();
+  document.getElementById("coin10").setAttribute("class", "animation-up");
+  setTimeout(() => { document.getElementById("empty10").innerHTML = '<img id="coin_up" src="coin10.gif">'; }, 200);
+  setTimeout(() => { document.getElementById("start10").innerHTML = empty_str; }, 200);
+  if (! decision_from_computer) {
+    setTimeout(() => { document.getElementById("empty09").innerHTML = left_arrow_str; }, 200);
+    setTimeout(() => { document.getElementById("empty11").innerHTML = right_arrow_str; }, 200);
+  }
+  else {
+    decision_from_computer = false;
+  }
+  index = coins.indexOf("coin10");
+  if (index > -1) {
+    coins.splice(index, 1);
+  }
+  index = pressed.indexOf("pressed_10()");
+  if (index > -1) {
+    pressed.splice(index, 1);
+  }
+  continue_coins();
+}
+
+function pressed_left_arrow() {
+  score_A += coin_value;
+  var left_num = ("0" + (coin_value - 1)).slice(-2);
+  var center_num = ("0" + coin_value).slice(-2);
+  var right_num = ("0" + (coin_value + 1)).slice(-2);
+  var left_id = "empty".concat(left_num);
+  var center_id = "empty".concat(center_num);
+  var right_id = "empty".concat(right_num);
+  document.getElementById(left_id).innerHTML = '';
+  document.getElementById(right_id).innerHTML = '';
+  document.getElementById("coin_up").setAttribute("class", "animation-left");
+  setTimeout(() => { document.getElementById("html_left_game").innerHTML = score_A; }, Math.sqrt(Math.sqrt(coin_value)) * 500);
+  setTimeout(() => { document.getElementById(center_id).innerHTML = empty_str; }, 1000);
+  curr_taker = 0;
+  continue_arrows();
+}
+
+function pressed_right_arrow() {
+  score_B += coin_value;
+  var left_num = ("0" + (coin_value - 1)).slice(-2);
+  var center_num = ("0" + coin_value).slice(-2);
+  var right_num = ("0" + (coin_value + 1)).slice(-2);
+  var left_id = "empty".concat(left_num);
+  var center_id = "empty".concat(center_num);
+  var right_id = "empty".concat(right_num);
+  document.getElementById(left_id).innerHTML = '';
+  document.getElementById(right_id).innerHTML = '';
+  document.getElementById("coin_up").setAttribute("class", "animation-right");
+  setTimeout(() => { document.getElementById("html_right_game").innerHTML = score_B; }, Math.sqrt(Math.sqrt(COINS + 1 - coin_value)) * 500);
+  setTimeout(() => { document.getElementById(center_id).innerHTML = empty_str; }, 1000);
+  curr_taker = 1;
+  continue_arrows();
+}
+
+function continue_arrows() {
+  take_coin.play();
+  if (curr_taker == 0) {
+    var taker_name = player_A_name;
+  }
+  else {
+    var taker_name = player_B_name;
+  }
+  document.getElementById("html_bottom_text_1").innerHTML = text;
+  text = decision_player_name + ' decides that coin ' + curr_epil + ' goes to ' + taker_name + '.';
+  document.getElementById("html_bottom_text_2").innerHTML = text;
+  document.getElementById("html_random").innerHTML = ' ';
+  //Έλεγχος ποιος αποφασίζει
+  prev_apof = curr_apof;
+  if (score_A > score_B) {
+    curr_apof = 1;
+  }
+  else if (score_A < score_B) {
+    curr_apof = 0;
+  }
+  else { //score_A == score_B
+    curr_apof = prev_apof; //Αποφασίζει ο παίκτης που αποφάσιζε στην προηγούμενη θέση
+  }
+  curr_pos[curr_epil - 1] = curr_taker;
+  i += 1;
+  if (i == COINS) {
+    setTimeout(curr_game_conclusion, 1000);
+    setTimeout(display_match_scores, 1000);
+    game += 1;
+    if (game > games) {
+      setTimeout(match_conclusion, 1000);
+      setTimeout(function () {
+        document.getElementById("html_random").innerHTML = '<button onclick="menu()" class="buttons" style="font-size:15px">Return to menu</button>';
+      }, 1000);
+      document.getElementById("html_left_player").className = "left0";
+      document.getElementById("html_right_player").className = "right0";
+    }
+    else { //Συνέχεια του ματς
+      setTimeout(function () {
+        document.getElementById("html_random").innerHTML = '<button onclick="start_new_game()" class="buttons" style="font-size:15px">Continue match</button>';
+      }, 1000);
+      document.getElementById("html_left_player").className = "left0";
+      document.getElementById("html_right_player").className = "right0";
+    }
+  }
+  else { //Συνέχεια του παιχνιδιού
+    setTimeout(restore_classes, 2000);
+    if (show_eval) {
+      display_eval(curr_apof);
+      //alert("decision after eval");
+    }
+    execute_selection();
+  }
+}
+
+function continue_coins() {
+  if (show_eval) {
+    if (i == 0) {
+      display_eval(2);
+    }
+    else {
+      display_eval(curr_apof);
+    }
+  }
+  document.getElementById("html_bottom_text_1").innerHTML = text;
+  text = player_pass + ' selects coin ' + coin_value + '.';
+  document.getElementById("html_bottom_text_2").innerHTML = text;
+  document.getElementById("html_random").innerHTML = ' ';
+  curr_epil = coin_value;
+  curr_pos[curr_epil - 1] = 8;
+  pop_coin.play();
+  execute_decision();
+}
+
+function restore_classes() {
+  for (var i = 0; i < coins.length; i++) {
+    document.getElementById(coins[i]).setAttribute("onclick", pressed[i]);
+    document.getElementById(coins[i]).setAttribute("class", "cursor-pointer");
+  }
+}
+
+function disable_classes() {
+  for (var i = 0; i < coins.length; i++) {
+    document.getElementById(coins[i]).setAttribute("onclick", "");
+    document.getElementById(coins[i]).setAttribute("class", "");
+  }
+}
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
+
+</script>
+
+</body>
+
+</html>
