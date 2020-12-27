@@ -6,3 +6,6 @@ In each round a player selects a coin and the other player decides which player 
 
 The game was originally developed in Python then translated into Javascript. Content displayed and animations were made with DOM, HTML and CSS.
 The game contains an easter egg! Can you find it?
+
+![Alt text](/menu-screen.PNG?raw=true "Menu Screen")
+![Alt text](/game-screen.PNG?raw=true "Game Screen")
